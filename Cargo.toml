@@ -46,6 +46,9 @@ fsevent-sys = "3"
 [target.'cfg(windows)'.dependencies]
 winapi = { version = "0.3.8", features = ["fileapi", "handleapi", "ioapiset", "minwinbase", "synchapi", "winbase", "winnt"] }
 
+[target.'cfg(any(target_os="solaris",target_os="illumos"))'.dependencies]
+event-port-sys = { git = "https://github.com/jclulow/event-ports-sys" }
+
 [dev-dependencies]
 serde_json = "1.0.39"
 

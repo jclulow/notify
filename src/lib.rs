@@ -111,6 +111,8 @@ pub use null::NullWatcher;
 pub use poll::PollWatcher;
 #[cfg(target_os = "windows")]
 pub use windows::ReadDirectoryChangesWatcher;
+#[cfg(any(target_os = "solaris", target_os = "illumos"))]
+pub use illumos::EventPortWatcher;
 
 #[cfg(target_os = "macos")]
 pub mod fsevent;
@@ -118,6 +120,8 @@ pub mod fsevent;
 pub mod inotify;
 #[cfg(target_os = "windows")]
 pub mod windows;
+#[cfg(any(target_os = "solaris", target_os = "illumos"))]
+pub mod illumos;
 
 pub mod event;
 pub mod null;
@@ -193,7 +197,10 @@ pub type RecommendedWatcher = FsEventWatcher;
 #[cfg(target_os = "windows")]
 pub type RecommendedWatcher = ReadDirectoryChangesWatcher;
 /// The recommended `Watcher` implementation for the current platform
-#[cfg(not(any(target_os = "linux", target_os = "macos", target_os = "windows")))]
+#[cfg(any(target_os = "solaris", target_os = "illumos"))]
+pub type RecommendedWatcher = EventPortWatcher;
+/// The recommended `Watcher` implementation for the current platform
+#[cfg(not(any(target_os = "linux", target_os = "macos", target_os = "windows", target_os = "solaris", target_os = "illumos")))]
 pub type RecommendedWatcher = PollWatcher;
 
 /// Convenience method for creating the `RecommendedWatcher` for the current platform in
